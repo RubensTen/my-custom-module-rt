@@ -1,15 +1,15 @@
 #!/usr/bin/env node
-console.log('Hello, world!');
+console.log('Start to create application');
 
-const { createProjectFolder } = require('./src/main');
+const { init } = require('./src/main');
 
 const program = require('commander');
 program
 .command('init <projectName>')
 .alias('i')
-.description('create s simple structure folder')
+.description('create a simple structure folder')
 .action((projectName) => {
-    createProjectFolder(projectName);
+    init(projectName);
 });
 
 
