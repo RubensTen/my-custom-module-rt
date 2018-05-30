@@ -4,11 +4,11 @@ const fs = require('fs');
 const createFolder = (folderName) => {
     try {
         if (!fs.existsSync(folderName)) {
-            fs.mkdirSync(folderName);
+            return fs.mkdirSync(folderName);
         }
         return true;
     } catch (error) {
-        return false;        
+        return false;
     }
 };
 
@@ -16,6 +16,7 @@ const createFile = (file, content) => {
     return new Promise((resolve, reject) => {
         fs.appendFile(file, content, (err) => {
             if (err) {
+                console.error(err);
                 reject(err);
             }else {
                 resolve(true);
@@ -69,10 +70,11 @@ const createGitIgnore = (projectName) => {
 const createDefaultModule = (pathModule, moduleName)=> {
     createFile(`${pathModule}.js`, moduleTemplate(moduleName))
     .then((success) => {
-        console.info('Module created');
+        console.info(`Module ${moduleName} created`);
     })
     .catch(error => {
-        console.error('Error to create a default module');
+        console.error(`Error to create a "${moduleName}" module`);
+        console.error(error);
     });
 };
 
@@ -89,5 +91,20 @@ const init = (projectName) => {
     }
 };
 
+const makeModule = (moduleName) => {
+    // create folder of module
+    if (createFolder(`${sourceCode}/${moduleName}`)) {
+        const filePath = `${sourceCode}/${moduleName}/${moduleName}.js`;
+        createFile(filePath, moduleTemplate(moduleName))
+        .then(success => {
+            console.log(`Module ${moduleName} created`);
+        })
+        .catch(error => {
+            console.error(`Error to create a ${moduleName} module`);
+        });
+    }else {
+        console.error('Error to create folder of module');
+    }
+};
 
-module.exports = { init };
+module.exports = { init, makeModule };

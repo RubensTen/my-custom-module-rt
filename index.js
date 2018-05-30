@@ -1,7 +1,5 @@
 #!/usr/bin/env node
-console.log('Start to create application');
-
-const { init } = require('./src/main');
+const { init, makeModule } = require('./src/main');
 
 const program = require('commander');
 program
@@ -12,5 +10,12 @@ program
     init(projectName);
 });
 
+program
+.command('module <moduleName>')
+.alias('m')
+.description('create a simple module')
+.action((moduleName) => {
+    makeModule(moduleName);
+});
 
 program.parse(process.argv);
